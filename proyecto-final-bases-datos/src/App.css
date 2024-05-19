@@ -1,0 +1,42 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+
+button{
+  border-radius: 1vh;
+  border: rgb(255, 255, 255);
+  font-family: 'Roboto', sans-serif;
+  font-size: 2.5vh;
+  font-weight: 500;
+}
+
+/*estilos para los inputs*/
+
+input{
+  border-radius: 4vh;
+  border: 1px solid #ffffff;
+  padding: 1vh;
+  cursor: pointer;
+  outline: none;
+}
+
+/*hearth animation*/
+
+@keyframes hearth {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.1);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+
+
+
