@@ -8,10 +8,10 @@ function TransaccionesCliente() {
   const URL = `${process.env.REACT_APP_BACKEND_URL}/transacciones` || 'http://localhost:3001/transacciones';
 
   const [transacciones, setTransacciones] = useState([]);
-  const [idTransaccion, setIdTransaccion] = useState('');
-  const [idLibro, setIdLibro] = useState('');
-  const [cantidad, setCantidad] = useState('');
-  const [precio, setPrecio] = useState('');
+  // const [idTransaccion, setIdTransaccion] = useState('');
+  // const [idLibro, setIdLibro] = useState('');
+  // const [cantidad, setCantidad] = useState('');
+  // const [precio, setPrecio] = useState('');
 
   useEffect(() => {
     fetchTransacciones();
@@ -27,22 +27,56 @@ function TransaccionesCliente() {
     }
   };
 
-  const editarTransacciones = async () => {
-    try {
-      await axios.put(`${URL}/${idTransaccion}`, {
-        idTransaccion,
-        idLibro,
-        cantidad,
-        precio
+  // const editarTransacciones = async () => {
+  //   try {
+  //     await axios.put(`${URL}/${idTransaccion}`, {
+  //       idTransaccion,
+  //       idLibro,
+  //       cantidad,
+  //       precio
+  //     });
+  //     fetchTransacciones();
+  //     setIdTransaccion('');
+  //     setIdLibro('');
+  //     setCantidad('');
+  //     setPrecio('');
+  //   } catch (error) {
+  //     console.error('Error al editar la transacción:', error);
+  //   }
+  // };
+
+  const obtenerTotal = async (id_libro,cantidad) => {
+    console.log(id_libro,cantidad);
+      try {
+          const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/libros/${id_libro}`);
+          return response.data.libro.precio*cantidad;
+      } catch (error) {
+          console.error('Error al obtener el total:', error);
+      }
+  }
+
+  const TotalVenta = ({ id_libro, cantidad }) => {
+    const [total, setTotal] = useState(null);
+  
+    useEffect(() => {
+      let isMounted = true;
+  
+      obtenerTotal(id_libro, cantidad).then(result => {
+        if (isMounted) {
+          setTotal(result);
+        }
       });
-      fetchTransacciones();
-      setIdTransaccion('');
-      setIdLibro('');
-      setCantidad('');
-      setPrecio('');
-    } catch (error) {
-      console.error('Error al editar la transacción:', error);
-    }
+  
+      return () => {
+        isMounted = false;
+      };
+    }, [id_libro, cantidad]);
+  
+    return (
+      <td style={{ padding: '1vh', borderBottom: '1px solid gray' }}>
+        {total !== null ? total : 'Cargando...'}
+      </td>
+    );
   };
 
   return (
@@ -52,7 +86,7 @@ function TransaccionesCliente() {
         <span style={{ marginLeft: '33.5vw', fontSize: '4vh', letterSpacing: '.4vh', fontWeight: '700' }}> Detalles Transacciones</span>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', borderRadius: '3vw', background: 'white', height: '35vh', width: '20%', marginBottom: '5vh' }}>
+      {/* <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', borderRadius: '3vw', background: 'white', height: '35vh', width: '20%', marginBottom: '5vh' }}>
         <input
           type="text"
           value={idTransaccion}
@@ -86,7 +120,7 @@ function TransaccionesCliente() {
         />
 
         <button onClick={editarTransacciones} style={{ height: '6vh', background: 'black', color: 'white' }}>Editar Transacción</button>
-      </div>
+      </div> */}
       
       <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', borderRadius: '3vw', width: '80%', color: 'black', padding: '1vh', marginBottom: '5vh' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', background: 'white', color: 'black', borderRadius: '1vh', overflow: 'hidden' }}>
@@ -108,7 +142,7 @@ function TransaccionesCliente() {
                 <td style={{ padding: '1vh', borderBottom: '1px solid gray' }}>{transaccion.apellido_cliente}</td>
                 <td style={{ padding: '1vh', borderBottom: '1px solid gray' }}>{transaccion.id_transaccion}</td>
                 <td style={{ padding: '1vh', borderBottom: '1px solid gray' }}>{transaccion.fechaventa}</td>
-                <td style={{ padding: '1vh', borderBottom: '1px solid gray' }}>{transaccion.totalventa}</td>
+                <TotalVenta id_libro={transaccion.id_libro} cantidad={transaccion.cantidad} />
               </tr>
             ))}
           </tbody>

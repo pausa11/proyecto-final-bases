@@ -20,6 +20,10 @@ function Home() {
             <button style={{background:'black',color:'white',border:'none',padding:'1vh',cursor:'pointer',borderRadius:'5px',marginBottom:'2vh'}} onClick={() => window.location.href='/transacciones'}>Transacciones</button>
         </div>
 
+        <footer style={{fontWeight: '100', width: '30%', display: 'flex', justifyContent: 'center', borderRadius: '1vh',fontSize:'3vh', position: 'fixed', bottom: 10}}>
+          Jannin Ramirez, Javier Parra, Daniel Toro
+        </footer>
+
 
     </div>
   );

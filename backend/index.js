@@ -58,6 +58,17 @@ app.get('/libros', async(req, res) => {
   );
 });
 
+app.get('/libros/:id', async(req, res) => {
+  const { id } = req.params;
+  const result = await pool.query('SELECT * FROM libros WHERE id = $1', [id]);
+  console.log(result);
+  res.send(
+    {
+      libro: result.rows[0]
+    }
+  );
+});
+
 // // Obtener las transacciones por ID de cliente
 // app.get('/transacciones/:id', async (req, res) => {
 //   const { id } = req.params;
@@ -107,7 +118,8 @@ app.get('/transacciones/:id', async (req, res) => {
         c.apellido AS apellido_cliente, 
         t.id AS id_transaccion, 
         t.fechaventa, 
-        t.totalventa
+        t.id_libro,
+        t.cantidad
       FROM 
         clientes c 
       INNER JOIN 
@@ -160,27 +172,43 @@ app.post('/libros', async(req, res) => {
 });
 
 app.post('/transacciones', async (req, res) => {
-  const { idCliente, fechaVenta, totalVenta } = req.body;
+  const { idCliente, fechaVenta, id_libro, cantidad } = req.body;
+  console.log(idCliente, fechaVenta, id_libro, cantidad);
+  const client = await pool.connect();
   try {
-    const result = await pool.query(
-      'INSERT INTO transaccion (id_cliente, fechaventa, totalventa) VALUES ($1, $2, $3) RETURNING *',
-      [idCliente, fechaVenta, totalVenta]
+    await client.query('BEGIN');
+
+    const insertResult = await client.query(
+      'INSERT INTO transaccion (id_cliente, fechaventa, id_libro, cantidad) VALUES ($1, $2, $3, $4) RETURNING *',
+      [idCliente, fechaVenta, id_libro, cantidad]
     );
-    res.send({ transacciones: result.rows });
+
+    const updateStockResult = await client.query(
+      'UPDATE libros SET stock = stock - $1 WHERE id = $2 RETURNING *',
+      [cantidad, id_libro]
+    );
+
+    await client.query('COMMIT');
+
+    res.send({ transacciones: insertResult.rows, libro: updateStockResult.rows[0] });
   } catch (error) {
+    await client.query('ROLLBACK');
     console.error('Error al agregar la transacción:', error);
     res.status(500).send('Error al agregar la transacción');
+  } finally {
+    client.release();
   }
 });
+
 
 //--------------------------------------------------------------------------
 
 app.put('/:id', async(req, res) => {
   const { id } = req.params;
-  const { nombre, apellido, edad, telefono, cedula } = req.body;
+  const { nombreEditar, apellidoEditar, edadEditar, telefonoEditar, cedulaEditar } = req.body;
   const result = await pool.query(
     'UPDATE clientes SET nombre = $1, apellido = $2, edad = $3, telefono = $4, cedula = $5 WHERE id = $6 RETURNING *',
-    [nombre, apellido, edad, telefono, cedula, id]
+    [nombreEditar, apellidoEditar, edadEditar, telefonoEditar, cedulaEditar, id]
   );
   console.log(result);
   res.send(
@@ -192,10 +220,11 @@ app.put('/:id', async(req, res) => {
 
 app.put('/libros/:id', async(req, res) => {
   const { id } = req.params;
-  const { titulo, autor, precio, stock, editorial } = req.body;
+  const { tituloEditar, autorEditar, precioEditar, stockEditar, editorialEditar } = req.body;
+  console.log(tituloEditar, autorEditar, precioEditar, stockEditar, editorialEditar);
   const result = await pool.query(
     'UPDATE libros SET titulo = $1, autor = $2, precio = $3, stock = $4, editorial = $5 WHERE id = $6 RETURNING *',
-    [titulo, autor, precio, stock, editorial, id]
+    [tituloEditar, autorEditar, precioEditar, stockEditar, editorialEditar, id]
   );
   console.log(result);
   res.send(
@@ -207,11 +236,11 @@ app.put('/libros/:id', async(req, res) => {
 
 app.put('/transacciones/:id', async (req, res) => {
   const { id } = req.params;
-  const { idCliente, fechaVenta, totalVenta } = req.body;
+  const { idClienteEditar, fechaVentaEditar, id_libroEditar, cantidadEditar } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE transaccion SET id_cliente = $1, fechaventa = $2, totalventa = $3 WHERE id = $4 RETURNING *',
-      [idCliente, fechaVenta, totalVenta, id]
+      'UPDATE transaccion SET id_cliente = $1, fechaventa = $2, id_libro = $3, cantidad = $4 WHERE id = $5 RETURNING *',
+      [idClienteEditar, fechaVentaEditar, id_libroEditar, cantidadEditar, id]
     );
     res.send({ transacciones: result.rows });
   } catch (error) {

@@ -11,6 +11,11 @@ function Clientes() {
   const [edad, setEdad] = useState('');
   const [telefono, setTelefono] = useState('');
   const [cedula, setCedula] = useState('');
+  const [nombreEditar, setNombreEditar] = useState('');
+  const [apellidoEditar, setApellidoEditar] = useState('');
+  const [edadEditar, setEdadEditar] = useState('');
+  const [telefonoEditar, setTelefonoEditar] = useState('');
+  const [cedulaEditar, setCedulaEditar] = useState('');
 
   useEffect(() => {
     fetchClientes();
@@ -62,18 +67,18 @@ function Clientes() {
   const editarClientes = async () => {
     try {
       await axios.put(`${URL}/${clienteAEditar.id}`, {
-        nombre,
-        apellido,
-        edad,
-        telefono,
-        cedula
+        nombreEditar,
+        apellidoEditar,
+        edadEditar,
+        telefonoEditar,
+        cedulaEditar
       });
       fetchClientes();
-      setNombre('');
-      setApellido('');
-      setEdad('');
-      setTelefono('');
-      setCedula('');
+      setNombreEditar('');
+      setApellidoEditar('');
+      setEdadEditar('');
+      setTelefonoEditar('');
+      setCedulaEditar('');
     } catch (error) {
       console.error('Error al editar cliente:', error);
     }
@@ -106,7 +111,7 @@ function Clientes() {
               style={{marginBottom:'1vh',textAlign:'center'}}
             />
             <input
-              type="text"
+              type="number"
               value={edad}
               placeholder="Edad de cliente"
               onChange={(e) => setEdad(e.target.value)}
@@ -138,39 +143,39 @@ function Clientes() {
             <text style={{fontSize:'2vh',fontWeight:'700',marginBottom:'1vh'}}>{clienteAEditar.cedula}</text>
             <input
               type="text"
-              value={nombre}
+              value={nombreEditar}
               placeholder="Nombre de cliente"
-              onChange={(e) => setNombre(e.target.value)}
+              onChange={(e) => setNombreEditar(e.target.value)}
               style={{marginBottom:'1vh',textAlign:'center'}}
             />
             <input
               type="text"
-              value={apellido}
+              value={apellidoEditar}
               placeholder="Apellido de cliente"
-              onChange={(e) => setApellido(e.target.value)}
+              onChange={(e) => setApellidoEditar(e.target.value)}
               style={{marginBottom:'1vh',textAlign:'center'}}
             />
             <input
-              type="text"
-              value={edad}
+              type="number"
+              value={edadEditar}
               placeholder="Edad de cliente"
-              onChange={(e) => setEdad(e.target.value)}
+              onChange={(e) => setEdadEditar(e.target.value)}
               style={{marginBottom:'1vh',textAlign:'center'}}
             />
 
             <input
               type="text"
-              value={telefono}
+              value={telefonoEditar}
               placeholder="Telefono de cliente"
-              onChange={(e) => setTelefono(e.target.value)}
+              onChange={(e) => setTelefonoEditar(e.target.value)}
               style={{marginBottom:'1vh',textAlign:'center'}}
             />
 
             <input
               type="text"
-              value={cedula}
+              value={cedulaEditar}
               placeholder="Cedula de cliente"
-              onChange={(e) => setCedula(e.target.value)}
+              onChange={(e) => setCedulaEditar(e.target.value)}
               style={{marginBottom:'1vh',textAlign:'center'}}
             />
 
@@ -188,7 +193,6 @@ function Clientes() {
               <th style={{padding: '1vh', borderBottom: '2px solid gray',textAlign:'left'}}>Telefono</th>
               <th style={{padding: '1vh', borderBottom: '2px solid gray',textAlign:'left'}}>Cedula</th>
               <th style={{padding: '1vh', borderBottom: '2px solid gray',textAlign:'left'}}>ID cliente</th>
-              <th style={{padding: '1vh', borderBottom: '2px solid gray',textAlign:'left'}}>ver transacciones</th>
             </tr>
           </thead>
           <tbody>
