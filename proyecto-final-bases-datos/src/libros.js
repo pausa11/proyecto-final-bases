@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css';
 
 function Libros() {
-  const URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001/libros';
+  const URL = `${process.env.REACT_APP_BACKEND_URL}/libros` || 'http://localhost:3001/libros';
 
   const [libros, setLibros] = useState([]);
   const [titulo, setTitulo] = useState('');

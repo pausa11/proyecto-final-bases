@@ -5,7 +5,7 @@ import './App.css';
 function TransaccionesCliente() {
   // Toma de la URL el id para hacer la consulta
   const id = window.location.pathname.split('/')[2];
-  const URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001/transacciones';
+  const URL = `${process.env.REACT_APP_BACKEND_URL}/transacciones` || 'http://localhost:3001/transacciones';
 
   const [transacciones, setTransacciones] = useState([]);
   const [idTransaccion, setIdTransaccion] = useState('');

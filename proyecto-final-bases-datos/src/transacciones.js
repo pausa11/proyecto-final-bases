@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css';
 
 function Transacciones() {
-    const URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001/transacciones';
+    const URL = `${process.env.REACT_APP_BACKEND_URL}/transacciones`|| 'http://localhost:3001/transacciones';
 
     const [transacciones, setTransacciones] = useState([]);
     const [idCliente, setIdCliente] = useState('');
