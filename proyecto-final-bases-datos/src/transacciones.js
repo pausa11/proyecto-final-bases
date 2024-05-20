@@ -141,7 +141,7 @@ function Transacciones() {
         <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', borderRadius: '3vw', background: 'white', height: '35vh', width: '20%', marginBottom: '5vh',marginRight:'3vw'}}>
             
             <input
-              type="text"
+              type="number"
               value={idCliente}
               placeholder="ID de cliente"
               onChange={(e) => setIdCliente(e.target.value)}
@@ -178,7 +178,7 @@ function Transacciones() {
             <text>ID de transaccion a editar:</text>
             <text>{transaccionAEditar.id}</text>
             <input
-              type="text"
+              type="number"
               value={idClienteEditar}
               placeholder="ID de cliente"
               onChange={(e) => setIdClienteEditar(e.target.value)}

@@ -119,7 +119,7 @@ function Clientes() {
             />
 
             <input
-              type="text"
+              type="number"
               value={telefono}
               placeholder="Telefono de cliente"
               onChange={(e) => setTelefono(e.target.value)}
@@ -127,7 +127,7 @@ function Clientes() {
             />
 
             <input
-              type="text"
+              type="number"
               value={cedula}
               placeholder="Cedula de cliente"
               onChange={(e) => setCedula(e.target.value)}
@@ -164,7 +164,7 @@ function Clientes() {
             />
 
             <input
-              type="text"
+              type="number"
               value={telefonoEditar}
               placeholder="Telefono de cliente"
               onChange={(e) => setTelefonoEditar(e.target.value)}
@@ -172,7 +172,7 @@ function Clientes() {
             />
 
             <input
-              type="text"
+              type="number"
               value={cedulaEditar}
               placeholder="Cedula de cliente"
               onChange={(e) => setCedulaEditar(e.target.value)}

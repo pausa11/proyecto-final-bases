@@ -6,7 +6,7 @@ function Home() {
     <div className="App" style={{background:'#E6E4D5',minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily:'calibri',alignItems:'center'}}>
 
         <div style={{display: 'flex',justifyContent: 'center', width:'100%', alignItems: 'center',marginBottom:'5vh',background:'black',height:'10vh',color:'white'}}>
-            <text style={{margin:'0', fontSize:'4vh',letterSpacing:'.4vh',fontWeight:'700'}}>Gestor Libreria </text>
+            <text style={{margin:'0', fontSize:'4vh',letterSpacing:'.4vh',fontWeight:'700'}}>LibroGest </text>
         </div>
 
         <div style={{display:'flex',flexDirection: 'column',justifyContent:'center'}}>

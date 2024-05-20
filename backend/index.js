@@ -58,6 +58,7 @@ app.get('/libros', async(req, res) => {
   );
 });
 
+//onbtener un libro por id
 app.get('/libros/:id', async(req, res) => {
   const { id } = req.params;
   const result = await pool.query('SELECT * FROM libros WHERE id = $1', [id]);
@@ -141,6 +142,7 @@ app.get('/transacciones/:id', async (req, res) => {
 
 //---------------------------------------------------------------------------
 
+// Agregar un cliente
 app.post('/', async(req, res) => {
   console.log('en post');
   const { nombre, apellido, edad, telefono, cedula } = req.body;
@@ -157,6 +159,7 @@ app.post('/', async(req, res) => {
   );
 });
 
+// Agregar un libro
 app.post('/libros', async(req, res) => {
   const { titulo, autor, precio, stock, editorial } = req.body;
   const result = await pool.query(
@@ -171,6 +174,7 @@ app.post('/libros', async(req, res) => {
   );
 });
 
+// Agregar una transacción
 app.post('/transacciones', async (req, res) => {
   const { idCliente, fechaVenta, id_libro, cantidad } = req.body;
   console.log(idCliente, fechaVenta, id_libro, cantidad);
@@ -200,9 +204,9 @@ app.post('/transacciones', async (req, res) => {
   }
 });
 
-
 //--------------------------------------------------------------------------
 
+// Editar un cliente
 app.put('/:id', async(req, res) => {
   const { id } = req.params;
   const { nombreEditar, apellidoEditar, edadEditar, telefonoEditar, cedulaEditar } = req.body;
@@ -218,6 +222,7 @@ app.put('/:id', async(req, res) => {
   );
 });
 
+// Editar un libro
 app.put('/libros/:id', async(req, res) => {
   const { id } = req.params;
   const { tituloEditar, autorEditar, precioEditar, stockEditar, editorialEditar } = req.body;
@@ -234,6 +239,7 @@ app.put('/libros/:id', async(req, res) => {
   );
 });
 
+// Editar una transacción
 app.put('/transacciones/:id', async (req, res) => {
   const { id } = req.params;
   const { idClienteEditar, fechaVentaEditar, id_libroEditar, cantidadEditar } = req.body;
@@ -251,6 +257,7 @@ app.put('/transacciones/:id', async (req, res) => {
 
 //---------------------------------------------------------------------------
 
+// Eliminar un cliente
 app.delete('/:id', async(req, res) => {
   const { id } = req.params;
   const result = await pool.query('DELETE FROM clientes WHERE id = $1', [id]);
@@ -262,6 +269,7 @@ app.delete('/:id', async(req, res) => {
   );
 });
 
+// Eliminar un libro
 app.delete('/libros/:id', async(req, res) => {
   const { id } = req.params;
   const result = await pool.query('DELETE FROM libros WHERE id = $1', [id]);
@@ -273,6 +281,7 @@ app.delete('/libros/:id', async(req, res) => {
   );
 });
 
+// Eliminar una transacción
 app.delete('/transacciones/:id', async (req, res) => {
   const { id } = req.params;
   try {
